@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,6 @@ class SectionAdapterActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
     }
 }
-
 
 class SectionExampleAdapter(val context: Context): SectionAdapter<RecyclerView.ViewHolder>() {
 
@@ -54,15 +54,15 @@ class SectionExampleAdapter(val context: Context): SectionAdapter<RecyclerView.V
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, indexPath: IndexPath) {
         (holder as? SectionHeaderHolder)?.apply {
-            this.textView.text = "Section #${indexPath.section} Header"
+            this.textView.text = "Section #${indexPath.section} Header, OriginPosition: ${getRawPosition(indexPath)}"
         }
 
         (holder as? SectionFooterHolder)?.apply {
-            this.textView.text = "Section #${indexPath.section} Footer"
+            this.textView.text = "Section #${indexPath.section} Footer, OriginPosition: ${getRawPosition(indexPath)}"
         }
 
         (holder as? SectionRowHolder)?.apply {
-            this.textView.text = "Row: ${indexPath.row}"
+            this.textView.text = "Row: ${indexPath.row}, OriginPosition: ${getRawPosition(indexPath)}"
         }
 
         when(indexPath.section) {
@@ -75,20 +75,20 @@ class SectionExampleAdapter(val context: Context): SectionAdapter<RecyclerView.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val textView = TextView(context)
-        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         textView.layoutParams = lp
-        when(viewType) {
+        return when(viewType) {
             // Header case
             0 -> {
-                return SectionHeaderHolder(textView)
+                SectionHeaderHolder(textView)
             }
             // Footer case
             1 -> {
-                return SectionFooterHolder(textView)
+                SectionFooterHolder(textView)
             }
             // Row case
             else -> {
-                return SectionRowHolder(textView)
+                SectionRowHolder(textView)
             }
         }
     }
@@ -96,12 +96,12 @@ class SectionExampleAdapter(val context: Context): SectionAdapter<RecyclerView.V
 
 class SectionHeaderHolder(val textView: TextView): RecyclerView.ViewHolder(textView) {
     init {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
     }
 }
 class SectionRowHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
 class SectionFooterHolder(val textView: TextView): RecyclerView.ViewHolder(textView) {
     init {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,16f)
     }
 }

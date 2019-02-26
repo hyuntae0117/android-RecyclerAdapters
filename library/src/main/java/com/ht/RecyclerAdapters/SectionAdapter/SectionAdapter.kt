@@ -4,7 +4,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 enum class SectionType {
     headerAndFooter,
-    header
+    header;
+
+    internal val extraViewCnt: Int
+    get() {
+        return when(this) {
+            headerAndFooter -> 2
+            header -> 1
+        }
+    }
 }
 
 abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
@@ -65,6 +73,20 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
         return IndexPath(position, section, type)
     }
 
+    fun getRawPosition(indexPath: IndexPath): Int {
+        var rawPostion = 0
+
+        for(i in 0 until indexPath.section) {
+            rawPostion += numberOfRows(i)
+        }
+
+        return when(indexPath.type) {
+            Type.header -> rawPostion + (sectionType.extraViewCnt * indexPath.section)
+            Type.footer -> rawPostion + (sectionType.extraViewCnt * indexPath.section) + numberOfRows(indexPath.section) + 1
+            Type.row -> rawPostion + indexPath.row + (sectionType.extraViewCnt * indexPath.section + 1)
+        }
+    }
+
     override fun getItemCount(): Int {
         val sectionCount = numberOfSection()
         var itemCount = 0
@@ -73,13 +95,6 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
             itemCount += numberOfRows(i)
         }
 
-        val sectionExtraViewCnt = when(sectionType) {
-            SectionType.header -> 1
-            SectionType.headerAndFooter -> 2
-        }
-        return itemCount + (sectionCount * sectionExtraViewCnt)
+        return itemCount + (sectionCount * sectionType.extraViewCnt)
     }
-
-
-
 }
