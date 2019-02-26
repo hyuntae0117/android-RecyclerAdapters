@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ht.RecyclerAdapters.SectionAdapter.IndexPath
 import com.ht.RecyclerAdapters.SectionAdapter.SectionAdapter
+import com.ht.RecyclerAdapters.SectionAdapter.SectionType
 import com.ht.RecyclerAdapters.SectionAdapter.Type
 import kotlinx.android.synthetic.main.activity_section_adapter.*
 
@@ -20,7 +21,9 @@ class SectionAdapterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_section_adapter)
-        rv.adapter = SectionExampleAdapter(this)
+        val adapter = SectionExampleAdapter(this)
+        adapter.sectionType = SectionType.header
+        rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(this)
     }
 }
