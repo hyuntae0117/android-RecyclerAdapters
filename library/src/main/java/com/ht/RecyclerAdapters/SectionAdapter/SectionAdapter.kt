@@ -4,13 +4,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 enum class SectionType {
     headerAndFooter,
-    header;
+    header,
+    none;
 
     internal val extraViewCnt: Int
     get() {
         return when(this) {
             headerAndFooter -> 2
             header -> 1
+            none -> 0
         }
     }
 }
@@ -38,9 +40,13 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
         return getItemViewType(indexPath)
     }
 
-    private fun getIndexPath(originPosition: Int): IndexPath {
+    fun getIndexPath(originPosition: Int): IndexPath {
         var position = 0
         var section = 0
+
+        when(sectionType) {
+            SectionType.none -> return getNoneTypeIndexPath(originPosition)
+        }
 
         for (i in 0 until (numberOfSection())) {
             val sectionRowCount = numberOfRows(i)
@@ -48,7 +54,9 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
             val padding: Int = when(sectionType) {
                 SectionType.headerAndFooter -> i * 2 + 1
                 SectionType.header -> i
+                SectionType.none -> 0
             }
+
             if (originPosition > (position + sectionRowCount + padding)) {
                 position += sectionRowCount
                 section += 1
@@ -57,6 +65,7 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
                 val offset: Int = when(sectionType) {
                     SectionType.headerAndFooter -> i * 2 + 1
                     SectionType.header -> i + 1
+                    SectionType.none -> 0
                 }
 
                 position = originPosition - (offset + position)
@@ -97,4 +106,28 @@ abstract class SectionAdapter<VH: RecyclerView.ViewHolder> : RecyclerView.Adapte
 
         return itemCount + (sectionCount * sectionType.extraViewCnt)
     }
+
+
+    private fun getNoneTypeIndexPath(originPosition: Int): IndexPath {
+        var position = 0
+        var section = 0
+
+        for (i in 0 until (numberOfSection())) {
+            val sectionRowCount = numberOfRows(i)
+
+            if (originPosition >= (position + sectionRowCount)) {
+                position += sectionRowCount
+                section += 1
+                continue
+            } else {
+
+                position = originPosition - position
+                section = i
+                break
+            }
+        }
+
+        return IndexPath(position, section, Type.row)
+    }
+
 }
