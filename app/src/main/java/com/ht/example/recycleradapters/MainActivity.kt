@@ -15,5 +15,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SectionAdapterActivity::class.java)
             startActivity(intent)
         }
+
+        expandableAdapterBtn.setOnClickListener {
+            val intent = Intent(this, ExpandableActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

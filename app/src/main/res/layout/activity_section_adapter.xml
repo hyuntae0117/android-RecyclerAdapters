@@ -13,4 +13,30 @@
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 
+    <Button
+            android:id="@+id/headerAndFooterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="header And Footer"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+            android:id="@+id/headerOnlyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="header only"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+            android:id="@+id/noneBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="noneBtn"
+            android:layout_marginBottom="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

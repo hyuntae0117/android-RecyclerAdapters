@@ -18,14 +18,30 @@ import com.ht.RecyclerAdapters.SectionAdapter.Type
 import kotlinx.android.synthetic.main.activity_section_adapter.*
 
 class SectionAdapterActivity : AppCompatActivity() {
+    var adapter: SectionExampleAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_section_adapter)
-        val adapter = SectionExampleAdapter(this)
-        adapter.sectionType = SectionType.header
+        adapter = SectionExampleAdapter(this)
+        adapter?.sectionType = SectionType.headerAndFooter
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(this)
+
+        headerAndFooterBtn.setOnClickListener {
+            adapter?.sectionType = SectionType.headerAndFooter
+            adapter?.notifyDataSetChanged()
+        }
+
+        headerOnlyBtn.setOnClickListener {
+            adapter?.sectionType = SectionType.header
+            adapter?.notifyDataSetChanged()
+        }
+
+        noneBtn.setOnClickListener {
+            adapter?.sectionType = SectionType.none
+            adapter?.notifyDataSetChanged()
+        }
     }
 }
 
