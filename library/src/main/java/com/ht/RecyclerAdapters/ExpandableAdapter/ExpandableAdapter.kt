@@ -28,10 +28,9 @@ abstract class ExpandableAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Ad
             val item = getItem(position) as ExpandableItem
             val _item = mItems[position]
             holder.itemView.setOnClickListener(View.OnClickListener {
-                if (expanded(_item)) {
-                    removeItems(_item, item.children)
-                } else {
-                    addItems(_item, item.children)
+                when (expanded(_item)) {
+                    true -> removeItems(_item, item.children)
+                    false -> addItems(_item, item.children)
                 }
             })
             onBindViewHolder(holder, position, _item.depth)
@@ -48,8 +47,10 @@ abstract class ExpandableAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Ad
         return mItems.size
     }
 
-    fun expanded(item: Any): Boolean {
+    fun expanded(item: Any): Boolean? {
         val position = mItems.indexOf(item)
+        if(position == -1)
+            return null
         return mItems[position].isExpanded
     }
 
@@ -70,7 +71,7 @@ abstract class ExpandableAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Ad
         val position = mItems.indexOf(parent)
         for (i in items.indices) {
             if (getItem(position + 1) is ExpandableItem) {
-                if (expanded(mItems[position + 1])) {
+                if (expanded(mItems[position + 1]) == true) {
                     val item = getItem(position + 1) as ExpandableItem
                     removeItems(mItems[position + 1], item.children)
                 }
