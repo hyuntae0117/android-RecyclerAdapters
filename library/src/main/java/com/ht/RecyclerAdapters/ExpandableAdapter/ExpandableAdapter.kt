@@ -10,7 +10,7 @@ abstract class ExpandableAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Ad
     var mItems: MutableList<ExpandableItemSet> = ArrayList()
 
 
-    fun setItems(items: List<*>) {
+    open fun setItems(items: List<*>) {
         for (item in items) {
             mItems.add(ExpandableItemSet(
                     item!!, false, 0
